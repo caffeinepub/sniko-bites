@@ -1,0 +1,306 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Mona Sans Variable Font ─────────────────────────────── */
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/assets/fonts/MonaSans[wdth,wght].woff2") format("woff2 supports variations"),
+    url("/assets/fonts/MonaSans[wdth,wght].woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Cabinet Grotesk ─────────────────────────────────────── */
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/assets/fonts/CabinetGrotesk-Variable.woff2") format("woff2 supports variations"),
+    url("/assets/fonts/CabinetGrotesk-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Satoshi Body Font ────────────────────────────────────── */
+@font-face {
+  font-family: "Satoshi";
+  src: url("/assets/fonts/Satoshi-Variable.woff2") format("woff2 supports variations"),
+    url("/assets/fonts/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 0.25rem;
+
+    /* Core palette — dark-first streetwear theme */
+    --background: 0.08 0 0;
+    --foreground: 0.97 0 0;
+    --card: 0.11 0 0;
+    --card-foreground: 0.97 0 0;
+    --popover: 0.13 0 0;
+    --popover-foreground: 0.97 0 0;
+
+    /* Primary: Electric Orange */
+    --primary: 0.72 0.2 50;
+    --primary-foreground: 0.06 0 0;
+
+    /* Secondary: Dark charcoal */
+    --secondary: 0.18 0 0;
+    --secondary-foreground: 0.97 0 0;
+
+    --muted: 0.14 0 0;
+    --muted-foreground: 0.55 0 0;
+
+    /* Accent: Neon Electric */
+    --accent: 0.72 0.2 50;
+    --accent-foreground: 0.06 0 0;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    --border: 0.22 0 0;
+    --input: 0.22 0 0;
+    --ring: 0.72 0.2 50;
+
+    --chart-1: 0.72 0.2 50;
+    --chart-2: 0.65 0.15 220;
+    --chart-3: 0.7 0.18 160;
+    --chart-4: 0.75 0.22 80;
+    --chart-5: 0.6 0.2 300;
+
+    --sidebar: 0.10 0 0;
+    --sidebar-foreground: 0.97 0 0;
+    --sidebar-primary: 0.72 0.2 50;
+    --sidebar-primary-foreground: 0.06 0 0;
+    --sidebar-accent: 0.18 0 0;
+    --sidebar-accent-foreground: 0.97 0 0;
+    --sidebar-border: 0.22 0 0;
+    --sidebar-ring: 0.72 0.2 50;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Satoshi", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Mona Sans", sans-serif;
+    font-stretch: 125%;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: "Cabinet Grotesk", sans-serif;
+  }
+
+  .font-heading {
+    font-family: "Mona Sans", sans-serif;
+    font-stretch: 125%;
+  }
+
+  /* Grain overlay texture */
+  .grain-overlay {
+    position: relative;
+  }
+  .grain-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Glow effect for primary accents */
+  .glow-orange {
+    box-shadow: 0 0 20px oklch(0.72 0.2 50 / 0.4), 0 0 60px oklch(0.72 0.2 50 / 0.15);
+  }
+
+  .text-glow-orange {
+    text-shadow: 0 0 30px oklch(0.72 0.2 50 / 0.6);
+  }
+
+  /* Clip path for diagonal sections */
+  .clip-diagonal-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+  }
+
+  .clip-diagonal-top {
+    clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+@layer components {
+  .sneaker-card {
+    @apply relative overflow-hidden rounded-sm bg-card border border-border transition-all duration-500;
+    cursor: pointer;
+  }
+
+  .sneaker-card:hover {
+    @apply border-primary;
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px oklch(0 0 0 / 0.6), 0 0 30px oklch(0.72 0.2 50 / 0.15);
+  }
+
+  .sneaker-card .card-image-wrapper {
+    @apply relative overflow-hidden;
+    aspect-ratio: 1;
+  }
+
+  .sneaker-card .card-image-wrapper img {
+    @apply w-full h-full object-cover transition-transform duration-700;
+  }
+
+  .sneaker-card:hover .card-image-wrapper img {
+    transform: scale(1.1);
+  }
+
+  .sneaker-card .quick-view {
+    @apply absolute bottom-0 left-0 right-0 bg-primary text-primary-foreground text-sm font-bold tracking-widest uppercase py-3 text-center opacity-0 translate-y-full transition-all duration-300;
+    font-family: "Cabinet Grotesk", sans-serif;
+  }
+
+  .sneaker-card:hover .quick-view {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold uppercase tracking-widest text-sm px-8 py-4 rounded-none transition-all duration-300;
+    font-family: "Cabinet Grotesk", sans-serif;
+  }
+
+  .btn-primary:hover {
+    @apply glow-orange;
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-foreground text-foreground font-bold uppercase tracking-widest text-sm px-8 py-4 rounded-none transition-all duration-300 bg-transparent;
+    font-family: "Cabinet Grotesk", sans-serif;
+  }
+
+  .btn-outline:hover {
+    @apply bg-foreground text-background;
+    transform: translateY(-2px);
+  }
+
+  .category-card {
+    @apply relative overflow-hidden rounded-none cursor-pointer transition-all duration-500;
+  }
+
+  .category-card:hover {
+    transform: scale(1.02);
+  }
+
+  .filter-tab {
+    @apply px-5 py-2 text-sm font-bold uppercase tracking-widest transition-all duration-300 border border-border rounded-none cursor-pointer;
+    font-family: "Cabinet Grotesk", sans-serif;
+  }
+
+  .filter-tab.active {
+    @apply bg-primary text-primary-foreground border-primary;
+  }
+
+  .filter-tab:not(.active):hover {
+    @apply border-foreground text-foreground;
+  }
+
+  .size-btn {
+    @apply w-12 h-12 flex items-center justify-center text-xs font-bold uppercase tracking-wider border border-border transition-all duration-200 rounded-none cursor-pointer;
+  }
+
+  .size-btn.selected {
+    @apply bg-primary text-primary-foreground border-primary;
+  }
+
+  .size-btn:not(.selected):hover {
+    @apply border-foreground;
+  }
+
+  .nav-link {
+    @apply text-muted-foreground hover:text-foreground transition-colors duration-200 text-sm font-bold uppercase tracking-widest;
+    font-family: "Cabinet Grotesk", sans-serif;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.08 0 0);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.3 0 0);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.72 0.2 50);
+}
+
+/* Selection */
+::selection {
+  background: oklch(0.72 0.2 50 / 0.4);
+  color: white;
+}
+
+/* Keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px oklch(0.72 0.2 50 / 0.3); }
+  50% { box-shadow: 0 0 30px oklch(0.72 0.2 50 / 0.7), 0 0 60px oklch(0.72 0.2 50 / 0.3); }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0) scaleY(1); opacity: 1; }
+  50% { transform: translateY(8px) scaleY(0.8); opacity: 0.5; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-scroll-bounce {
+  animation: scroll-bounce 1.5s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
