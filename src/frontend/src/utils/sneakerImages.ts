@@ -1,25 +1,49 @@
+// High-quality sneaker images from Unsplash (free to use)
+const SNEAKER_IMAGES: Record<string, string[]> = {
+  Running: [
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&h=800&fit=crop&q=80",
+  ],
+  Basketball: [
+    "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1551107696-a4b537da5038?w=800&h=800&fit=crop&q=80",
+  ],
+  Lifestyle: [
+    "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1556906781-9a412961a28c?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1465453869711-7e174808ace9?w=800&h=800&fit=crop&q=80",
+  ],
+  "Limited Edition": [
+    "https://images.unsplash.com/photo-1584735175315-9d5df23be620?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1539185441755-769473a23570?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1520316587275-5e4f06f355e3?w=800&h=800&fit=crop&q=80",
+  ],
+  "High Top": [
+    "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1467043153537-a4fba2cd39ef?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?w=800&h=800&fit=crop&q=80",
+  ],
+  Outdoor: [
+    "https://images.unsplash.com/photo-1543508282-6319a3e2621f?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1619812096095-7af6bdb8b764?w=800&h=800&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&h=800&fit=crop&q=80",
+  ],
+};
+
+const FALLBACK_IMAGES = [
+  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&h=800&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&h=800&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&h=800&fit=crop&q=80",
+];
+
 export function getSneakerImage(category: string, index: number): string {
-  const idx = index % 2;
-  switch (category) {
-    case "Running":
-      return idx === 0
-        ? "/assets/generated/sneaker-runner-1.dim_800x800.jpg"
-        : "/assets/generated/sneaker-runner-2.dim_800x800.jpg";
-    case "Basketball":
-      return "/assets/generated/sneaker-basketball-1.dim_800x800.jpg";
-    case "Lifestyle":
-      return idx === 0
-        ? "/assets/generated/sneaker-lifestyle-1.dim_800x800.jpg"
-        : "/assets/generated/sneaker-lifestyle-2.dim_800x800.jpg";
-    case "Limited Edition":
-      return "/assets/generated/sneaker-limited-1.dim_800x800.jpg";
-    case "High Top":
-      return "/assets/generated/sneaker-hightop-1.dim_800x800.jpg";
-    case "Outdoor":
-      return "/assets/generated/sneaker-outdoor-1.dim_800x800.jpg";
-    default:
-      return "/assets/generated/sneaker-runner-1.dim_800x800.jpg";
-  }
+  const images = SNEAKER_IMAGES[category] ?? FALLBACK_IMAGES;
+  return images[index % images.length];
 }
 
 export const CATEGORY_CONFIG: Record<

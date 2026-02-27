@@ -41,7 +41,7 @@ export function HeroSection() {
         style={{ transform: `translateY(${scrollY * 0.4}px)` }}
       >
         <img
-          src="/assets/generated/hero-sneaker.dim_1600x900.jpg"
+          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1600&h=900&fit=crop&q=85"
           alt="Sniko Bites hero sneaker"
           className="w-full h-full object-cover object-center scale-110"
           loading="eager"
