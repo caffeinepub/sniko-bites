@@ -1,7 +1,8 @@
 import { Loader2 } from "lucide-react";
 import { motion } from "motion/react";
-import type { Sneaker } from "../hooks/useQueries";
 import { SneakerCard } from "./SneakerCard";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Sneaker = any;
 
 interface FeaturedSectionProps {
   sneakers: Sneaker[];

@@ -8,41 +8,149 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const Sneaker = IDL.Record({
+export const Size = IDL.Variant({ '_100g' : IDL.Null, '_500g' : IDL.Null });
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const ProductCategory = IDL.Variant({
+  'Dark' : IDL.Null,
+  'Milk' : IDL.Null,
+  'White' : IDL.Null,
+  'Special' : IDL.Null,
+});
+export const Product = IDL.Record({
   'id' : IDL.Nat,
+  'imagePath' : IDL.Text,
   'name' : IDL.Text,
   'description' : IDL.Text,
-  'sizes' : IDL.Vec(IDL.Text),
-  'isFeatured' : IDL.Bool,
-  'category' : IDL.Text,
-  'price' : IDL.Float64,
+  'sizes' : IDL.Vec(Size),
+  'category' : ProductCategory,
+});
+export const UserProfile = IDL.Record({
+  'deliveryAddress' : IDL.Text,
+  'name' : IDL.Text,
+  'email' : IDL.Text,
+  'phoneNumber' : IDL.Text,
+});
+export const CartItem = IDL.Record({
+  'size' : Size,
+  'productId' : IDL.Nat,
+  'quantity' : IDL.Nat,
+});
+export const OrderStatus = IDL.Variant({
+  'Delivered' : IDL.Null,
+  'Processing' : IDL.Null,
+  'Shipped' : IDL.Null,
+  'Pending' : IDL.Null,
+});
+export const Order = IDL.Record({
+  'id' : IDL.Nat,
+  'status' : OrderStatus,
+  'deliveryAddress' : IDL.Text,
+  'userId' : IDL.Principal,
+  'items' : IDL.Vec(CartItem),
+  'totalPrice' : IDL.Float64,
 });
 
 export const idlService = IDL.Service({
-  'getAllSneakers' : IDL.Func([], [IDL.Vec(Sneaker)], ['query']),
-  'getFeaturedSneakers' : IDL.Func([], [IDL.Vec(Sneaker)], ['query']),
-  'getSneakerById' : IDL.Func([IDL.Nat], [Sneaker], ['query']),
-  'seedSneakers' : IDL.Func([], [], []),
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'addToCart' : IDL.Func([IDL.Nat, Size, IDL.Nat], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'clearCart' : IDL.Func([], [], []),
+  'getAllProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getCart' : IDL.Func([], [IDL.Vec(CartItem)], ['query']),
+  'getMyOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
+  'getOrder' : IDL.Func([IDL.Nat], [Order], ['query']),
+  'getProductById' : IDL.Func([IDL.Nat], [Product], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'placeOrder' : IDL.Func([], [IDL.Nat], []),
+  'removeFromCart' : IDL.Func([IDL.Nat, Size], [], []),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'seedProducts' : IDL.Func([], [], []),
+  'updateOrderStatus' : IDL.Func([IDL.Nat, OrderStatus], [], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
-  const Sneaker = IDL.Record({
+  const Size = IDL.Variant({ '_100g' : IDL.Null, '_500g' : IDL.Null });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const ProductCategory = IDL.Variant({
+    'Dark' : IDL.Null,
+    'Milk' : IDL.Null,
+    'White' : IDL.Null,
+    'Special' : IDL.Null,
+  });
+  const Product = IDL.Record({
     'id' : IDL.Nat,
+    'imagePath' : IDL.Text,
     'name' : IDL.Text,
     'description' : IDL.Text,
-    'sizes' : IDL.Vec(IDL.Text),
-    'isFeatured' : IDL.Bool,
-    'category' : IDL.Text,
-    'price' : IDL.Float64,
+    'sizes' : IDL.Vec(Size),
+    'category' : ProductCategory,
+  });
+  const UserProfile = IDL.Record({
+    'deliveryAddress' : IDL.Text,
+    'name' : IDL.Text,
+    'email' : IDL.Text,
+    'phoneNumber' : IDL.Text,
+  });
+  const CartItem = IDL.Record({
+    'size' : Size,
+    'productId' : IDL.Nat,
+    'quantity' : IDL.Nat,
+  });
+  const OrderStatus = IDL.Variant({
+    'Delivered' : IDL.Null,
+    'Processing' : IDL.Null,
+    'Shipped' : IDL.Null,
+    'Pending' : IDL.Null,
+  });
+  const Order = IDL.Record({
+    'id' : IDL.Nat,
+    'status' : OrderStatus,
+    'deliveryAddress' : IDL.Text,
+    'userId' : IDL.Principal,
+    'items' : IDL.Vec(CartItem),
+    'totalPrice' : IDL.Float64,
   });
   
   return IDL.Service({
-    'getAllSneakers' : IDL.Func([], [IDL.Vec(Sneaker)], ['query']),
-    'getFeaturedSneakers' : IDL.Func([], [IDL.Vec(Sneaker)], ['query']),
-    'getSneakerById' : IDL.Func([IDL.Nat], [Sneaker], ['query']),
-    'seedSneakers' : IDL.Func([], [], []),
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'addToCart' : IDL.Func([IDL.Nat, Size, IDL.Nat], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'clearCart' : IDL.Func([], [], []),
+    'getAllProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getCart' : IDL.Func([], [IDL.Vec(CartItem)], ['query']),
+    'getMyOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
+    'getOrder' : IDL.Func([IDL.Nat], [Order], ['query']),
+    'getProductById' : IDL.Func([IDL.Nat], [Product], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'placeOrder' : IDL.Func([], [IDL.Nat], []),
+    'removeFromCart' : IDL.Func([IDL.Nat, Size], [], []),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'seedProducts' : IDL.Func([], [], []),
+    'updateOrderStatus' : IDL.Func([IDL.Nat, OrderStatus], [], []),
   });
 };
 

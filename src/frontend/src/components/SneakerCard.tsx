@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
-import type { Sneaker } from "../hooks/useQueries";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Sneaker = any;
 import { getSneakerImage } from "../utils/sneakerImages";
 
 interface SneakerCardProps {

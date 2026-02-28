@@ -1,46 +1,88 @@
-import { Footprints } from "lucide-react";
-import { SiInstagram, SiTiktok, SiX } from "react-icons/si";
+import { Link } from "@tanstack/react-router";
+import { SiInstagram, SiX } from "react-icons/si";
 
 const FOOTER_LINKS = {
-  Shop: ["Running", "Basketball", "Lifestyle", "Limited Edition", "High Top"],
-  Company: ["About Us", "Careers", "Press", "Sustainability"],
-  Support: ["FAQ", "Shipping & Returns", "Size Guide", "Contact Us"],
+  Collections: [
+    "Dark Chocolate",
+    "Milk Chocolate",
+    "White Chocolate",
+    "Signature Specials",
+  ],
+  "About Us": ["Our Story", "The Studio", "Sustainability", "Press"],
+  Support: ["FAQ", "Shipping Info", "Returns", "Contact Us"],
 };
 
 export function Footer() {
   const year = new Date().getFullYear();
   const caffeineUrl = `https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`;
+  const goldColor = "oklch(0.76 0.14 75)";
 
   return (
-    <footer className="bg-card border-t border-border">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+    <footer
+      className="border-t"
+      style={{
+        background: "oklch(0.09 0.018 44)",
+        borderColor: "oklch(0.76 0.14 75 / 0.12)",
+      }}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-primary flex items-center justify-center">
-                <Footprints className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <span className="font-display font-black text-xl tracking-[0.15em] uppercase text-foreground">
-                Sniko <span className="text-primary">Bites</span>
+            <Link to="/" className="inline-flex flex-col leading-none mb-5">
+              <span
+                className="text-2xl font-bold tracking-tight"
+                style={{
+                  fontFamily: '"Playfair Display", serif',
+                  color: goldColor,
+                }}
+              >
+                Harshellow
               </span>
-            </div>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mb-6">
-              Premium sneakers for those who move fast and look good doing it.
-              Born on the streets. Built for legends.
+              <span
+                className="text-[9px] tracking-[0.2em] uppercase mt-1"
+                style={{ color: "oklch(0.50 0.04 55)" }}
+              >
+                www.harshellow-chocolates.com
+              </span>
+            </Link>
+
+            <p
+              className="text-sm leading-relaxed max-w-xs mb-6"
+              style={{ color: "oklch(0.55 0.04 55)" }}
+            >
+              Crafted with rare cacao from origin estates, Harshellow brings
+              uncompromising luxury to every bar. Handmade with love, packaged
+              with intention.
             </p>
+
             {/* Social icons */}
             <div className="flex items-center gap-3">
               {[
                 { Icon: SiInstagram, label: "Instagram" },
                 { Icon: SiX, label: "Twitter / X" },
-                { Icon: SiTiktok, label: "TikTok" },
               ].map(({ Icon, label }) => (
                 <button
-                  type="button"
                   key={label}
+                  type="button"
                   aria-label={label}
-                  className="w-9 h-9 border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-none"
+                  className="w-9 h-9 border flex items-center justify-center transition-all duration-200"
+                  style={{
+                    borderColor: "oklch(0.28 0.03 50)",
+                    color: "oklch(0.55 0.04 55)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor =
+                      goldColor;
+                    (e.currentTarget as HTMLButtonElement).style.color =
+                      goldColor;
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor =
+                      "oklch(0.28 0.03 50)";
+                    (e.currentTarget as HTMLButtonElement).style.color =
+                      "oklch(0.55 0.04 55)";
+                  }}
                 >
                   <Icon className="w-4 h-4" />
                 </button>
@@ -51,18 +93,30 @@ export function Footer() {
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([section, links]) => (
             <div key={section}>
-              <h3 className="font-display font-black text-xs uppercase tracking-[0.2em] text-foreground mb-4">
+              <h3
+                className="text-xs uppercase tracking-[0.2em] font-semibold mb-4"
+                style={{
+                  color: goldColor,
+                  fontFamily: '"Plus Jakarta Sans", sans-serif',
+                }}
+              >
                 {section}
               </h3>
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link}>
-                    <button
-                      type="button"
-                      className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded text-left"
+                    <span
+                      className="text-sm cursor-pointer transition-colors duration-200 block"
+                      style={{ color: "oklch(0.52 0.04 55)" }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = "oklch(0.85 0.015 75)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = "oklch(0.52 0.04 55)";
+                      }}
                     >
                       {link}
-                    </button>
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -71,17 +125,21 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-xs">
-            © {year} Sniko Bites. All rights reserved.
+        <div
+          className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+          style={{ borderColor: "oklch(0.76 0.14 75 / 0.1)" }}
+        >
+          <p className="text-xs" style={{ color: "oklch(0.45 0.03 52)" }}>
+            © {year} Harshellow Chocolates. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-xs">
-            Built with ♥ using{" "}
+          <p className="text-xs" style={{ color: "oklch(0.45 0.03 52)" }}>
+            Built with <span style={{ color: goldColor }}>♥</span> using{" "}
             <a
               href={caffeineUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              className="transition-colors duration-200 hover:underline"
+              style={{ color: goldColor }}
             >
               caffeine.ai
             </a>

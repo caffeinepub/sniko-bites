@@ -16,9 +16,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Satoshi"', "sans-serif"],
-        heading: ['"Mona Sans"', "sans-serif"],
-        display: ['"Cabinet Grotesk"', "sans-serif"],
+        sans: ['"Plus Jakarta Sans"', "sans-serif"],
+        serif: ['"Playfair Display"', "serif"],
+        display: ['"Fraunces"', "serif"],
+        instrument: ['"Instrument Serif"', "serif"],
       },
       colors: {
         border: "oklch(var(--border))",
@@ -73,14 +74,15 @@ export default {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "4px",
+        md: "3px",
+        sm: "2px",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgba(0,0,0,0.05)",
-        "orange-glow": "0 0 20px oklch(0.72 0.2 50 / 0.4), 0 0 60px oklch(0.72 0.2 50 / 0.15)",
-        "card-hover": "0 20px 60px rgba(0,0,0,0.6), 0 0 30px oklch(0.72 0.2 50 / 0.15)",
+        "gold-sm": "0 0 12px oklch(0.76 0.14 75 / 0.3)",
+        "gold-md": "0 0 24px oklch(0.76 0.14 75 / 0.45), 0 0 60px oklch(0.76 0.14 75 / 0.15)",
+        "choco-card": "0 24px 64px oklch(0.08 0.02 45 / 0.8), 0 0 40px oklch(0.76 0.14 75 / 0.12)",
+        "deep": "0 32px 80px oklch(0.05 0.01 40 / 0.9)",
       },
       keyframes: {
         "accordion-down": {
@@ -99,12 +101,17 @@ export default {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% center" },
+          "100%": { backgroundPosition: "200% center" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.6s ease-out forwards",
         "fade-in": "fade-in 0.4s ease-out forwards",
+        "shimmer": "shimmer 1.8s ease-in-out infinite",
       },
     },
   },

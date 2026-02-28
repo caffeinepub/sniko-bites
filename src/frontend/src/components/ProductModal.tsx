@@ -3,7 +3,8 @@ import { Check, ShoppingBag, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { toast } from "sonner";
-import type { Sneaker } from "../hooks/useQueries";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Sneaker = any;
 import { getSneakerImage } from "../utils/sneakerImages";
 
 interface ProductModalProps {

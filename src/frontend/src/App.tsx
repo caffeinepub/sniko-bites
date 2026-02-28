@@ -1,96 +1,137 @@
 import { Toaster } from "@/components/ui/sonner";
-import { useEffect, useState } from "react";
-import { AboutSection } from "./components/AboutSection";
-import { AllKicksSection } from "./components/AllKicksSection";
-import { CollectionsSection } from "./components/CollectionsSection";
-import { FeaturedSection } from "./components/FeaturedSection";
+import {
+  Outlet,
+  RouterProvider,
+  createRootRoute,
+  createRoute,
+  createRouter,
+} from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Footer } from "./components/Footer";
-import { HeroSection } from "./components/HeroSection";
-import { MarqueeBar } from "./components/MarqueeBar";
 import { Navbar } from "./components/Navbar";
-import { NewsletterSection } from "./components/NewsletterSection";
-import { ProductModal } from "./components/ProductModal";
-import { type Sneaker, useSeedAndFetch } from "./hooks/useQueries";
+import { useActor } from "./hooks/useActor";
+import {
+  useAllProducts,
+  useIsSeeded,
+  useSeedProducts,
+} from "./hooks/useQueries";
+import { CartPage } from "./pages/CartPage";
+import { CheckoutPage } from "./pages/CheckoutPage";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { OrderConfirmationPage } from "./pages/OrderConfirmationPage";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { ProfilePage } from "./pages/ProfilePage";
+import { ShopPage } from "./pages/ShopPage";
 
-export default function App() {
-  const {
-    allSneakers,
-    featuredSneakers,
-    isLoading,
-    seed,
-    isSeeded,
-    actorReady,
-  } = useSeedAndFetch();
+// ─── Root layout with seeding logic ───────────────────────────────
+function RootLayout() {
+  const { actor, isFetching } = useActor();
+  const { data: products } = useAllProducts();
+  const seedMutation = useSeedProducts();
+  const isSeeded = useIsSeeded();
 
-  const [selectedSneaker, setSelectedSneaker] = useState<Sneaker | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-
-  // Seed once on first load
+  const seedMutate = seedMutation.mutate;
   useEffect(() => {
-    if (actorReady && !isSeeded) {
-      seed();
+    if (actor && !isFetching && !isSeeded) {
+      if (products !== undefined && products.length === 0) {
+        seedMutate();
+      }
     }
-  }, [actorReady, isSeeded, seed]);
-
-  const handleQuickView = (sneaker: Sneaker, index: number) => {
-    setSelectedSneaker(sneaker);
-    setSelectedIndex(index);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedSneaker(null);
-  };
-
-  const handleCategoryFilter = (category: string) => {
-    setCategoryFilter(category);
-  };
-
-  // Use featured sneakers for featured section; fall back to all if empty
-  const displayFeatured =
-    featuredSneakers.length > 0
-      ? featuredSneakers
-      : allSneakers.filter((s) => s.isFeatured);
+  }, [actor, isFetching, products, isSeeded, seedMutate]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Navbar />
-      <main>
-        <HeroSection />
-        <MarqueeBar />
-        <FeaturedSection
-          sneakers={displayFeatured}
-          isLoading={isLoading}
-          onQuickView={handleQuickView}
-        />
-        <CollectionsSection onCategoryFilter={handleCategoryFilter} />
-        <AllKicksSection
-          sneakers={allSneakers}
-          isLoading={isLoading}
-          activeFilter={categoryFilter}
-          onQuickView={handleQuickView}
-        />
-        <AboutSection />
-        <NewsletterSection />
+      <main className="flex-1">
+        <Outlet />
       </main>
       <Footer />
-
-      <ProductModal
-        sneaker={selectedSneaker}
-        index={selectedIndex}
-        onClose={handleCloseModal}
-      />
-
       <Toaster
         position="bottom-right"
         toastOptions={{
           style: {
-            background: "oklch(0.13 0 0)",
-            border: "1px solid oklch(0.22 0 0)",
-            color: "oklch(0.97 0 0)",
+            background: "oklch(0.16 0.022 45)",
+            border: "1px solid oklch(0.76 0.14 75 / 0.3)",
+            color: "oklch(0.95 0.015 75)",
+            fontFamily: '"Plus Jakarta Sans", sans-serif',
           },
         }}
       />
     </div>
   );
+}
+
+// ─── Routes ───────────────────────────────────────────────────────
+const rootRoute = createRootRoute({ component: RootLayout });
+
+const homeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  component: HomePage,
+});
+
+const shopRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/shop",
+  component: ShopPage,
+});
+
+const productRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/product/$id",
+  component: ProductDetailPage,
+});
+
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/login",
+  component: LoginPage,
+});
+
+const profileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/profile",
+  component: ProfilePage,
+});
+
+const cartRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/cart",
+  component: CartPage,
+});
+
+const checkoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/checkout",
+  component: CheckoutPage,
+});
+
+const orderConfirmRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/order/$id",
+  component: OrderConfirmationPage,
+});
+
+const routeTree = rootRoute.addChildren([
+  homeRoute,
+  shopRoute,
+  productRoute,
+  loginRoute,
+  profileRoute,
+  cartRoute,
+  checkoutRoute,
+  orderConfirmRoute,
+]);
+
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
